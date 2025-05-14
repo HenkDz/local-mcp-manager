@@ -179,7 +179,7 @@ const createWindow = async () => {
     // Handler to write managed servers to a client's mcp.json
     ipcMain.handle(
       'client:write-mcp-config',
-      async (_event, clientConfigPath: string, managedServers: Server[]) => {
+      async (_event, clientConfigPath: string, managedServers: Server[], clientId: string) => {
         if (!clientConfigPath) {
           console.error('Attempted to write MCP config with no path.');
           return { success: false, error: 'Client configuration path is missing.' };
@@ -221,9 +221,10 @@ const createWindow = async () => {
             outputServers[server.name] = serverEntry;
           }
 
-          // Update mcpConfig with the new set of servers
-          // We will overwrite the mcpServers key. If client uses 'servers' key, this needs more sophisticated merging.
-          mcpConfig.mcpServers = outputServers;
+          // We will overwrite the chosen key. If client uses a mix, this needs more sophisticated merging.
+          const mcpOutputKey = clientId === 'cursor' ? 'servers' : 'mcpServers';
+          mcpConfig[mcpOutputKey] = outputServers;
+          delete mcpConfig[clientId === 'cursor' ? 'mcpServers' : 'servers']; // Remove the other key if it exists
           
           // Ensure the directory exists
           const dir = path.dirname(clientConfigPath);

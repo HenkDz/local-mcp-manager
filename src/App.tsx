@@ -314,7 +314,7 @@ function App() {
     }
     showNotification(`Configuring ${client.name}...`, 'info', 'Client Configuration');
     try {
-      const result = await window.electronAPI.writeClientMcpConfig(client.globalMcpConfigPath, servers);
+      const result = await window.electronAPI.writeClientMcpConfig(client.globalMcpConfigPath, servers, client.id);
       if (result.success) {
         showNotification(`${client.name} configured. mcp.json updated.`, 'success', 'Configuration Complete');
       } else {

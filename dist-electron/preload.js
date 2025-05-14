@@ -11,7 +11,7 @@ const electronAPI = {
   // Client detection and configuration
   detectClients: () => ipcRenderer.invoke("app:detect-clients"),
   getClientMcpServers: (filePath) => ipcRenderer.invoke("client:get-mcp-servers", filePath),
-  writeClientMcpConfig: (filePath, servers) => ipcRenderer.invoke("client:write-mcp-config", filePath, servers)
+  writeClientMcpConfig: (filePath, servers, clientId) => ipcRenderer.invoke("client:write-mcp-config", filePath, servers, clientId)
 };
 try {
   contextBridge.exposeInMainWorld("electronAPI", electronAPI);

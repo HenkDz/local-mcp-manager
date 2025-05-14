@@ -18,7 +18,7 @@ const electronAPI: IElectronAPI = {
   // Client detection and configuration
   detectClients: () => ipcRenderer.invoke('app:detect-clients'),
   getClientMcpServers: (filePath: string) => ipcRenderer.invoke('client:get-mcp-servers', filePath),
-  writeClientMcpConfig: (filePath: string, servers: Server[]) => ipcRenderer.invoke('client:write-mcp-config', filePath, servers),
+  writeClientMcpConfig: (filePath: string, servers: Server[], clientId: string) => ipcRenderer.invoke('client:write-mcp-config', filePath, servers, clientId),
 };
 
 try {

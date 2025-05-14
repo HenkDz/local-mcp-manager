@@ -488,7 +488,7 @@ const createWindow = async () => {
     });
     ipcMain.handle(
       "client:write-mcp-config",
-      async (_event, clientConfigPath, managedServers) => {
+      async (_event, clientConfigPath, managedServers, clientId) => {
         if (!clientConfigPath) {
           console.error("Attempted to write MCP config with no path.");
           return { success: false, error: "Client configuration path is missing." };
@@ -519,7 +519,9 @@ const createWindow = async () => {
             serverEntry.env = server.env || {};
             outputServers[server.name] = serverEntry;
           }
-          mcpConfig.mcpServers = outputServers;
+          const mcpOutputKey = clientId === "cursor" ? "servers" : "mcpServers";
+          mcpConfig[mcpOutputKey] = outputServers;
+          delete mcpConfig[clientId === "cursor" ? "mcpServers" : "servers"];
           const dir = path__default.dirname(clientConfigPath);
           await fs__default.promises.mkdir(dir, { recursive: true });
           await fs__default.promises.writeFile(clientConfigPath, JSON.stringify(mcpConfig, null, 2), "utf-8");

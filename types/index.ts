@@ -46,7 +46,7 @@ export interface ImportResult {
     importServers: (jsonString: string) => Promise<{ success: boolean; message: string; importedCount?: number; errorCount?: number; errors?: { serverName: string; error: string }[] }>;
     detectClients: () => Promise<{ success: boolean; clients?: DetectedClient[]; error?: string }>;
     getClientMcpServers: (filePath: string) => Promise<{ success: boolean; data?: ClientMcpJsonData; error?: string }>;
-    writeClientMcpConfig: (filePath: string, servers: Server[]) => Promise<{ success: boolean; error?: string }>;
+    writeClientMcpConfig: (filePath: string, servers: Server[], clientId: string) => Promise<{ success: boolean; error?: string }>;
   }
 
 // Represents the data structure within a client's mcp.json file
